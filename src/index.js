@@ -1,7 +1,8 @@
 const express = require("express")
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose')
-const mongodbRoute = 'mongo string conection goes here'
+const mongodbRoute = 'mongodb+srv://enekoazkue:enekoazkuepasswd@cluster0.ylpw1pf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+
 
 const app = express();
 
