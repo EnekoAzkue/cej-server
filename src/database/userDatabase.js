@@ -11,6 +11,7 @@ const getAllUsers = async () => {
         throw error;
     }
 };
+
 module.exports = {
     getAllUsers
 }
