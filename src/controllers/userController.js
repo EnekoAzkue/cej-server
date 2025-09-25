@@ -24,9 +24,20 @@ const createNewUser = async (newUser) => {
     }
 }
 
-
+const updateUser = async(userMail, changes) => {
+    try
+    {
+        const updatedUser = await Workout.updateUser(userMail, changes);
+        return updatedUser;
+    }
+    catch (error)
+    {
+        throw error;
+    }
+};
 
 module.exports = { 
     getUser,
-    createNewUser
+    createNewUser,
+    updateUser
 }
