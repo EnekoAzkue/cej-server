@@ -118,3 +118,5 @@ const playerSchema = new Schema({
 
 });
 
+module.exports = mongoose.model('userDatabase', playerSchema);
+
