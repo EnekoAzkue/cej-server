@@ -1,9 +1,11 @@
 const express = require("express")
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose')
-const mongodbRoute = 'mongo string conection goes here'
+const mongodbRoute = 'mongodb+srv://enekoazkue:enekoazkuepasswd@cluster0.ylpw1pf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
 const app = express();
+
+initializeApp();
 
 const PORT = process.env.PORT || 3000;
 
@@ -24,3 +26,13 @@ async function start(){
     }
 }
 start ();
+
+var admin = require("firebase-admin");
+
+var serviceAccount = require("../er6-cej-firebase-adminsdk-fbsvc-8da2344087.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://er6-cej-default-rtdb.europe-west1.firebasedatabase.app"
+});
+
