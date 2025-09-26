@@ -4,12 +4,13 @@ const userRouter = require("./routes/userRoutes");
 const mongoose = require("mongoose");
 const admin = require("firebase-admin");
 const serviceAccount = require("../er6-cej-firebase-adminsdk-fbsvc-8da2344087.json");
-const { initializeApp } = require("firebase-admin/app");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 const mongodbRoute =
   "mongodb+srv://enekoazkue:enekoazkuepasswd@cluster0.ylpw1pf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-initializeApp();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,8 +33,3 @@ async function start() {
 }
 
 start();
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://er6-cej-default-rtdb.europe-west1.firebasedatabase.app",
-});
