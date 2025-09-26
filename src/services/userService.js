@@ -13,6 +13,8 @@ const getUser = async (userMail) => {
 };
 
 const createNewUser = async (newUser) => {
+    const newUser = {active: false, ...newUser}
+
     try
     {
         const createdUser =  User.createNewUser(newUser);
@@ -25,6 +27,8 @@ const createNewUser = async (newUser) => {
 }
 
 const updateUser = async(userMail, changes) => {
+    changes.active = true;
+
     try
     {
         const updatedUser = await Workout.updateUser(userMail, changes);
