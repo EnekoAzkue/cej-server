@@ -9,3 +9,5 @@ router.post(
   middleware.verifyIdToken,
   userController.updateUser
 );
+
+module.exports = router;
