@@ -75,9 +75,49 @@ const createNewUser = async (req, res) => {
     }
 };
 
+const updateUser = async (req, res) => {
+    const {
+        body,
+        //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
+        // params: { res.locals.userEmail }
+        params: { userEmail }
+    } = req;
+
+    //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
+    // if(!res.locals.userEmail) {
+    if(!userEmail) {
+        return res
+            .status(400)
+            .send({
+                status: "FAILED",
+                data: { error: "Parameter: 'userMail' can not be empty"},
+            });
+    }
+
+    try {
+        if(!body.status) {
+            body.status = true;
+        }
+
+        //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
+        // const updatedUser = await userService.updateUser(res.locals.userEmail, body);
+        const updatedUser = await userService.updateUser(userEmail, body);
+
+        res.send({ status: "OK", data: updatedUser });
+        
+    } catch (error) {
+      res
+        .status(error?.status || 500)
+        .send({ status: "FAILED",
+                message: "Error al realizar la peticion:",
+                data: { error: error?.message || error } });
+    }
+};
+
 
 
 module.exports = { 
     getUser,
-    createNewUser
+    createNewUser,
+    updateUser
 }
