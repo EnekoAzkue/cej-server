@@ -2,6 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const userRouter = require("./routes/userRoutes");
 const mongoose = require("mongoose");
+const admin = require("firebase-admin");
+const serviceAccount = require("../er6-cej-firebase-adminsdk-fbsvc-8da2344087.json");
+const { initializeApp } = require("firebase-admin/app");
 
 const mongodbRoute =
   "mongodb+srv://enekoazkue:enekoazkuepasswd@cluster0.ylpw1pf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -29,10 +32,6 @@ async function start() {
 }
 
 start();
-
-const admin = require("firebase-admin");
-
-const serviceAccount = require("../er6-cej-firebase-adminsdk-fbsvc-8da2344087.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
