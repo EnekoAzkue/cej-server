@@ -1,6 +1,6 @@
 const userService = require(".../services/userService");
 
-const getUser = async (req, res) => {
+const getMongoUser = async (req, res) => {
     //UNCOMMENT AND REPLACE WHEN MIDDLEWARE IS IMPLEMENTED
     // const {params: { res.locals.userEmail }} = req
     const {params: { userEmail }} = req
@@ -21,6 +21,46 @@ const getUser = async (req, res) => {
         //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
         // const user = await userService.getUser(res.locals.userEmail);
         const user = await userService.getUser(userEmail);
+        if(!user) {
+            return res 
+            .status(403)
+            .send({ status: "FAILED",
+                //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
+                // data: { error: `Can't find user with the Email: ${res.locals.userEmail}`} });
+                data: { error: `Can't find user with the Email: ${userEmail}`} });
+        }
+
+        res.send({ status: "OK", data: user });
+    } catch (error) {
+      res
+        .status(error?.status || 500)
+        .send({ status: "FAILED",
+                message: "Error al realizar la peticion:",
+                data: { error: error?.message || error} });  
+    }
+};
+
+const getKaotikaUser = async (req, res) => {
+    //UNCOMMENT AND REPLACE WHEN MIDDLEWARE IS IMPLEMENTED
+    // const {params: { res.locals.userEmail }} = req
+    const {params: { userEmail }} = req
+    
+    //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
+    // if(!res.locals.userEmail) {
+    if(!userEmail) {
+        return res
+            .status(400)
+            .send({
+                status: "FAILED",
+                data: { error: "Parameter: 'userEmail' can not be empty"}
+            })
+    }
+
+    try {
+
+        //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
+        // const user = await userService.getUser(res.locals.userEmail);
+        const user = await userService.getKaotikaUser(userEmail);
         if(!user) {
             return res 
             .status(403)
@@ -117,7 +157,8 @@ const updateUser = async (req, res) => {
 
 
 module.exports = { 
-    getUser,
+    getMongoUser,
+    getKaotikaUser,
     createNewUser,
     updateUser
 }
