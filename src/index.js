@@ -16,7 +16,7 @@ app.use("/user", userRouter);
 
 async function start() {
   try {
-    await mongoose.connect(process.env.MONGODB_ROUTE);
+    await mongoose.connect("mongodb+srv://enekoazkue:enekoazkuepasswd@cluster0.ylpw1pf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 
     app.listen(PORT, () => {
       console.log(`API is listening on port ${PORT}.`);

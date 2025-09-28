@@ -1,14 +1,16 @@
 const { getAuth } = require("firebase-admin/auth");
 
 function verifyIdToken(req, res, next) {
-  const { idToken } = req.body;
+  // Fake para pruebas
+  res.locals.userEmail = "eneko.azkue@ikasle.aeg.eus";
+  return next();
 
+  /*
+  const { idToken } = req.body;
   getAuth()
     .verifyIdToken(idToken)
     .then((decodedToken) => {
-      const userEmail = decodedToken.email;
-      res.locals.userEmail = userEmail;
-
+      res.locals.userEmail = decodedToken.email;
       next();
     })
     .catch(() => {
@@ -17,8 +19,7 @@ function verifyIdToken(req, res, next) {
         data: { error: "The ID token is not valid or has expired." },
       });
     });
+  */
 }
 
-module.exports = {
-  verifyIdToken,
-};
+module.exports = { verifyIdToken };
