@@ -1,164 +1,85 @@
-const userService = require(".../services/userService");
+const userService = require("../services/userService");
 
 const getMongoUser = async (req, res) => {
-    //UNCOMMENT AND REPLACE WHEN MIDDLEWARE IS IMPLEMENTED
-    // const {params: { res.locals.userEmail }} = req
-    const {params: { userEmail }} = req
-    
-    //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
-    // if(!res.locals.userEmail) {
-    if(!userEmail) {
-        return res
-            .status(400)
-            .send({
-                status: "FAILED",
-                data: { error: "Parameter: 'userEmail' can not be empty"}
-            })
+  const userEmail = res.locals.userEmail;
+
+  if (!userEmail) {
+    return res.status(400).send({
+      status: "FAILED",
+      data: { error: "userEmail not available" },
+    });
+  }
+
+  try {
+    const user = await userService.getUser(userEmail);
+    if (!user) {
+      return res.status(403).send({
+        status: "FAILED",
+        data: { error: `Can't find user with the Email: ${userEmail}` },
+      });
     }
-
-    try {
-
-        //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
-        // const user = await userService.getUser(res.locals.userEmail);
-        const user = await userService.getUser(userEmail);
-        if(!user) {
-            return res 
-            .status(403)
-            .send({ status: "FAILED",
-                //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
-                // data: { error: `Can't find user with the Email: ${res.locals.userEmail}`} });
-                data: { error: `Can't find user with the Email: ${userEmail}`} });
-        }
-
-        res.send({ status: "OK", data: user });
-    } catch (error) {
-      res
-        .status(error?.status || 500)
-        .send({ status: "FAILED",
-                message: "Error al realizar la peticion:",
-                data: { error: error?.message || error} });  
-    }
+    res.send({ status: "OK", data: user });
+  } catch (error) {
+    res.status(500).send({
+      status: "FAILED",
+      message: "Error fetching user from Mongo",
+      data: { error: error?.message || error },
+    });
+  }
 };
 
 const getKaotikaUser = async (req, res) => {
-    //UNCOMMENT AND REPLACE WHEN MIDDLEWARE IS IMPLEMENTED
-    // const {params: { res.locals.userEmail }} = req
-    const {params: { userEmail }} = req
-    
-    //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
-    // if(!res.locals.userEmail) {
-    if(!userEmail) {
-        return res
-            .status(400)
-            .send({
-                status: "FAILED",
-                data: { error: "Parameter: 'userEmail' can not be empty"}
-            })
+  const userEmail = res.locals.userEmail;
+
+  if (!userEmail) {
+    return res.status(400).send({
+      status: "FAILED",
+      data: { error: "userEmail not available" },
+    });
+  }
+
+  try {
+    const user = await userService.getKaotikaUser(userEmail);
+    if (!user) {
+      return res.status(403).send({
+        status: "FAILED",
+        data: { error: `Can't find user in Kaotika with the Email: ${userEmail}` },
+      });
     }
-
-    try {
-
-        //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
-        // const user = await userService.getUser(res.locals.userEmail);
-        const user = await userService.getKaotikaUser(userEmail);
-        if(!user) {
-            return res 
-            .status(403)
-            .send({ status: "FAILED",
-                //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
-                // data: { error: `Can't find user with the Email: ${res.locals.userEmail}`} });
-                data: { error: `Can't find user with the Email: ${userEmail}`} });
-        }
-
-        res.send({ status: "OK", data: user });
-    } catch (error) {
-      res
-        .status(error?.status || 500)
-        .send({ status: "FAILED",
-                message: "Error al realizar la peticion:",
-                data: { error: error?.message || error} });  
-    }
+    res.send({ user });
+  } catch (error) {
+    res.status(500).send({
+      status: "FAILED",
+      message: "Error fetching user from Kaotika",
+      data: { error: error?.message || error },
+    });
+  }
 };
 
-const createNewUser = async (req, res) => {
-    const { body } = req;
-    if (
-        !body.status ||
-        !body.data
-    ) {
-      res
-        .status(400)
-        .send({
-            status: "FAILED",
-            data: {
-                error: 
-                 "One of the following keys is missing or is empty in request body: 'status','data'",
-            },
-        });
-        return
-    }
+const loginUser = async (req, res) => {
+  const userEmail = res.locals.userEmail;
 
-    const newUser = {
-        status: body.status,
-        data: body.data
-    };
+  if (!userEmail) {
+    return res.status(400).send({
+      status: "FAILED",
+      data: { error: "userEmail not available" },
+    });
+  }
 
-    try {
-        const createdUser = await userService.createNewUser(newUser);
-        res.status(201).send({ status: "OK", data: createdUser });
-    } catch (error) {
-      res
-        .status(error?.status || 500)
-        .send({ status: "FAILED",
-                message: "Error al realizar la peticion:",
-                data: { error: error?.message || error } });
-    }
+  try {
+    const user = await userService.loginUser(userEmail);
+    res.send({ status: "OK", data: user });
+  } catch (error) {
+    res.status(500).send({
+      status: "FAILED",
+      message: "Error during login flow",
+      data: { error: error?.message || error },
+    });
+  }
 };
 
-const updateUser = async (req, res) => {
-    const {
-        body,
-        //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
-        // params: { res.locals.userEmail }
-        params: { userEmail }
-    } = req;
-
-    //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
-    // if(!res.locals.userEmail) {
-    if(!userEmail) {
-        return res
-            .status(400)
-            .send({
-                status: "FAILED",
-                data: { error: "Parameter: 'userMail' can not be empty"},
-            });
-    }
-
-    try {
-        if(!body.status) {
-            body.status = true;
-        }
-
-        //UNCOMMENT WHEN MIDDLEWARE IS IMPLEMENTED
-        // const updatedUser = await userService.updateUser(res.locals.userEmail, body);
-        const updatedUser = await userService.updateUser(userEmail, body);
-
-        res.send({ status: "OK", data: updatedUser });
-        
-    } catch (error) {
-      res
-        .status(error?.status || 500)
-        .send({ status: "FAILED",
-                message: "Error al realizar la peticion:",
-                data: { error: error?.message || error } });
-    }
+module.exports = {
+  getMongoUser,
+  getKaotikaUser,
+  loginUser,
 };
-
-
-
-module.exports = { 
-    getMongoUser,
-    getKaotikaUser,
-    createNewUser,
-    updateUser
-}
