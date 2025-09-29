@@ -47,7 +47,6 @@ const updateUser = async (userEmail, changes) => {
 const loginUser = async (userEmail) => {
   try {
     const kaotikaUser = await getKaotikaUser(userEmail);
-    console.log('Kaotika user data:', kaotikaUser);
     if (!kaotikaUser) {
       throw new Error(`User not found in Kaotika with email: ${userEmail}`);
     }
@@ -59,7 +58,7 @@ const loginUser = async (userEmail) => {
         ...kaotikaUser,   
         active: false,    
       };
-      return await createUser(kaotikaUser);
+      return await createUser(newUser);
     }
 
     return await updateUser(userEmail, { active: true });

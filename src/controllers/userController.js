@@ -68,7 +68,7 @@ const loginUser = async (req, res) => {
 
   try {
     const user = await userService.loginUser(userEmail);
-    res.send({ status: "OK", data: user });
+    res.send({ user });
   } catch (error) {
     res.status(500).send({
       status: "FAILED",
