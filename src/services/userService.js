@@ -56,9 +56,33 @@ const loginUser = async (userEmail) => {
         ...kaotikaUser,   
       };
       return await createUser(newUser);
+    }   
+
+    const updatedUser = await updateUser(userEmail, {
+      active: true,
+      ...kaotikaUser,
+    });
+
+    return updatedUser;
+
+  } catch (error) {
+    throw error;
+  }
+};
+
+const logedUser = async (userEmail) => {
+  try {
+    const kaotikaUser = await getKaotikaUser(userEmail);
+    if (!kaotikaUser) {
+      throw new Error(`User not found in Kaotika with email: ${userEmail}`);
     }
 
-    return await updateUser(userEmail, { active: true });
+    const updatedUser = await updateUser(userEmail, {
+      active: true,
+      ...kaotikaUser,
+    });
+
+    return updatedUser;
 
   } catch (error) {
     throw error;
@@ -70,5 +94,6 @@ module.exports = {
   createUser,
   updateUser,
   getKaotikaUser,
-  loginUser
+  loginUser,
+  logedUser,
 };
