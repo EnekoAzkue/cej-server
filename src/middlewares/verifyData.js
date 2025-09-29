@@ -4,7 +4,7 @@ async function verifyIdToken(req, res, next) {
   const { idToken } = req.body;
 
   const response = await fetch(
-    "https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=AIzaSyAfZZEegCYwyzyN-8pCKbs7uBrSU8J7010",
+    `https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${process.env.GOOGLE_API_KEY}`,
     {
       method: "POST",
       body: JSON.stringify({
