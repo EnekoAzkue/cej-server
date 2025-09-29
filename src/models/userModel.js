@@ -14,91 +14,44 @@ const itemFields = {
   min_lvl: Number,
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Player Profile & Attributes
 const playerAttributesSchema = new Schema({
+  _id: String,
   name: String,
   description: String,
   value: Number,
 });
 
-const playerProfileSchema = new Schema({
+const playerProfile = {
+  _id: String,
   name: String,
   description: String,
   image: String,
   attributes: [playerAttributesSchema],
-});
+};
 
 // Tasks Schema
-const tasksSchema = new Schema({
-  classroom_Id: String,
+const tasksSchema = {
+  classroomId: String,
   courseWorkName: String,
   grade: Number,
   selectedAssignment: String,
   maxPoints: Number,
-});
+  _id: String,
+};
 
 // Skills Schema
 const skillsSchema = new Schema({
+  _id: String,
   skill: String,
   activeLevels: [Number],
-});
+}, { _id: false });
+
+
 
 // Player Info Schema
-const playerInfoSchema = new Schema({
+const playerInfo = {
+  _id: String,
   name: String,
   nickname: String,
   email: String,
@@ -107,18 +60,13 @@ const playerInfoSchema = new Schema({
   level: Number,
   experience: Number,
   is_active: Boolean,
-  profile: playerProfileSchema,
+  profile: playerProfile,
   gold: Number,
   tasks: [tasksSchema],
-  created_date: {
-    type: Date,
-    default: Date.now,
-  },
+  created_date: String,
   isBetrayer: Boolean,
   skills: [skillsSchema],
-});
-
-
+};
 
 const ringModifiers = {
   intelligence: Number,
@@ -134,6 +82,19 @@ const ringSchema = new Schema({
   ...itemFields,
 });
 
+const bootFields = {
+  _id: String,
+  name: String,
+  description: String,
+  type: String,
+  image: String,
+  value: Number,
+  defense: Number,
+  min_lvl: Number,
+  isActive: Boolean,
+  isUnique: Boolean,
+}
+
 const bootModifiers = {
   intelligence: Number,
   dexterity: Number,
@@ -145,10 +106,21 @@ const bootModifiers = {
 
 const bootSchema = new Schema({
   modifiers: bootModifiers,
-  ...itemFields,
+  ...bootFields,
+});
+
+const shieldFields = {
+  _id: String,
+  name: String,
+  description: String,
+  type: String,
+  image: String,
+  value: Number,
+  defense: Number,
+  min_lvl: Number,
   isUnique: Boolean,
   isActive: Boolean,
-});
+}
 
 const shieldModifiers = {
   intelligence: Number,
@@ -161,11 +133,21 @@ const shieldModifiers = {
 
 const shieldSchema = new Schema({
   modifiers: shieldModifiers,
-  ...itemFields,
+  ...shieldFields,
+});
+
+const helmetFields = {
+  _id: String,
+  name: String,
+  description: String,
+  type: String,
+  image: String,
+  value: Number,
   defense: Number,
+  min_lvl: Number,
   isUnique: Boolean,
   isActive: Boolean,
-});
+}
 
 const helmetModifiers = {
   intelligence: Number,
@@ -179,9 +161,21 @@ const helmetModifiers = {
 // Equipment pieces
 const helmetSchema = new Schema({
   modifiers: helmetModifiers,
-  ...itemFields,
-  defense: Number,
+  ...helmetFields,
+
+
 });
+
+const enhancerPotionFields = {
+  _id: String,
+  name: String,
+  description: String,
+  type: String,
+  image: String,
+  value: Number,
+  duration: Number,
+  min_lvl: Number,
+}
 
 const enhancerPotionModifiers = {
   intelligence: Number,
@@ -194,8 +188,7 @@ const enhancerPotionModifiers = {
 
 const enhancerPotSchema = new Schema({
   modifiers: enhancerPotionModifiers,
-  ...itemFields,
-  duration: Number,
+  ...enhancerPotionFields,
 });
 
 const healingPotionModifiers = {
@@ -224,15 +217,23 @@ const recoveryEffectModifiers = {
   strength: Number,
 }
 
-const recoveryEffects = {
-  modifiers: recoveryEffectModifiers,
+const recoveryEffectData = {
   _id: String,
   name: String,
   description: String,
   type: String,
   antidote_effects: [String],
   poison_effects: [String],
-  
+}
+
+const recoveryEffects = {
+  modifiers: recoveryEffectModifiers,
+  _id: String,
+  name: String,
+  description: String,
+  type: { type: String },
+  antidote_effects: [String],
+  poison_effects: [String],
 }
 
 const antidoteFields = {
@@ -337,18 +338,19 @@ const weaponsSchema = new Schema({
 });
 
 // Inventory Schema (multiple items)
-// const inventorySchema = new Schema({
-//   helmets: [helmetSchema],
-//   weapons: [weaponsSchema],
-//   shields: [shieldSchema],
-//   artifacts: [artifactsSchema],
-//   boots: [bootSchema],
-//   rings: [ringSchema],
-//   antidote_potions: [antidoteSchema],
-//   healing_potions: [healingPotSchema],
-//   enhancer_potions: [enhancerPotSchema],
-//   ingredients: [String],
-// });
+const inventorySchema = new Schema({
+  helmets: [helmetSchema],
+  weapons: [weaponsSchema],
+  armors: [armorsSchema],
+  shields: [shieldSchema],
+  artifacts: [artifactsSchema],
+  boots: [bootSchema],
+  rings: [ringSchema],
+  antidote_potions: [antidoteSchema],
+  healing_potions: [healingPotSchema],
+  enhancer_potions: [enhancerPotSchema],
+  ingredients: [String],
+});
 
 // Equipment Schema (equipped items)
 const equipmentSchema = new Schema({
@@ -356,12 +358,12 @@ const equipmentSchema = new Schema({
   armor: armorsSchema,
   artifact: artifactsSchema,
   antidote_potion: antidoteSchema,
-  // healing_potion: healingPotSchema,
-  // enhancer_potion: enhancerPotSchema,
-  // helmet: helmetSchema,
-  // shield: shieldSchema,
-  // boot: bootSchema,
-  // ring: ringSchema,
+  healing_potion: healingPotSchema,
+  enhancer_potion: enhancerPotSchema,
+  helmet: helmetSchema,
+  shield: shieldSchema,
+  boot: bootSchema,
+  ring: ringSchema,
 });
 
 // Basic modifiers fields
@@ -377,29 +379,16 @@ const userAttributes = {
 const dataSchema = new Schema({
   attributes: userAttributes,
   equipment: equipmentSchema,
-  // inventory: inventorySchema,
-  // _id: String,
-  // name: String,
-  // nickname: String,
-  // email: String,
-  // avatar: String,
-  // classroom_Id: String,
-  // level: Number,
-  // experience: Number,
-  // is_active: Boolean,
-  // profile:
-  // gold: Number,
-  // tasks:
-  // created_date: String,
-  // isBetrayer: Boolean,
-  // skills: 
+  inventory: inventorySchema,
+  ...playerInfo,
 })
 
 // Main Player Schema
 const playerSchema = new Schema({
+  active: Boolean,
   status: String,
   data: dataSchema,
 });
 
-module.exports = mongoose.model('UserModel', playerSchema);
+module.exports = mongoose.model('player', playerSchema);
 
