@@ -78,8 +78,32 @@ const loginUser = async (req, res) => {
   }
 };
 
+const logedUser = async (req, res) => {
+  const userEmail = res.locals.userEmail;
+
+  if (!userEmail) {
+    return res.status(400).send({
+      status: "FAILED",
+      data: { error: "userEmail not available" },
+    });
+  }
+
+  try {
+    const updatedUser = await userService.logedUser(userEmail);
+    res.send({ updatedUser });
+  } catch (error) {
+    res.status(500).send({
+      status: "FAILED",
+      message: "Error refreshing user from Kaotika",
+      data: { error: error?.message || error },
+    });
+  }
+};
+
+
 module.exports = {
   getMongoUser,
   getKaotikaUser,
   loginUser,
+  logedUser,
 };
