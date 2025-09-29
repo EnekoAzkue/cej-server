@@ -23,7 +23,7 @@ router.get(
 );
 
 router.post(
-  "/login",
+  "/log-in",
   middleware.verifyIdToken,       
   userController.loginUser
 );
