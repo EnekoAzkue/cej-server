@@ -2,7 +2,7 @@ const userModel = require('../models/userModel');
 
 const getUser = async (userEmail) => {
   try {
-    const user = await userModel.findOne({ email: userEmail });
+    const user = await userModel.findOne({ "data.email": userEmail });
     return user;
   } catch (error) {
     throw error;
@@ -22,7 +22,7 @@ const createUser = async (newUser) => {
 const updateUser = async (userEmail, changes) => {
   try {
     const updatedUser = await userModel.findOneAndUpdate(
-      { userEmail },{ $set: changes },{ new: true }         
+      { "data.email": userEmail },{ $set: changes },{ new: true, upsert: true }         
     );
     return updatedUser;
   } catch (error) {

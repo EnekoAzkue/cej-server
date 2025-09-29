@@ -3,7 +3,6 @@ const User = require('../database/userDatabase');
 const getUser = async (userEmail) => {
   try {
     const user = await User.getUser(userEmail);
-    console.log('Fetched user from MongoDB:', userEmail);
     return user;
   } catch (error) {
     throw error;
@@ -12,7 +11,6 @@ const getUser = async (userEmail) => {
 
 const getKaotikaUser = async (userEmail) => {
   try {
-    console.log(`Fetching user from Kaotika with email: ${userEmail}`);
     const response = await fetch(`https://kaotika-server.fly.dev/players/email/${userEmail}`);
     if (!response.ok) {
       throw new Error(`Kaotika API error: ${response.status}`);
@@ -28,7 +26,6 @@ const createUser = async (newUser) => {
   try {
       
       const createdUser = await User.createUser(newUser);
-      console.log('Creating new user in MongoDB');
     return createdUser;
   } catch (error) {
     throw error;
@@ -55,8 +52,8 @@ const loginUser = async (userEmail) => {
 
     if (!mongoUser) {
       const newUser = {
-        ...kaotikaUser,   
         active: false,    
+        ...kaotikaUser,   
       };
       return await createUser(newUser);
     }

@@ -18,7 +18,7 @@ const getMongoUser = async (req, res) => {
         data: { error: `Can't find user with the Email: ${userEmail}` },
       });
     }
-    res.send({ status: "OK", data: user });
+    res.send({  user });
   } catch (error) {
     res.status(500).send({
       status: "FAILED",
