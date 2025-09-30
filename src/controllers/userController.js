@@ -70,8 +70,24 @@ const loginUser = async (req, res) => {
   }
 
   try {
-    const user = await userService.loginUser(userEmail);
-    res.send({ user });
+    const putOrPost = await userService.loginUser(userEmail);
+
+    const user = putOrPost[1];
+
+    if(putOrPost[0] === 0) {
+      return res.status(201).send({
+        status: "OK",
+        message: "User created successfully",
+        user
+      });
+    } else {
+      return res.status(200).send({
+        status: "OK",
+        message: "User updated successfully",
+        user
+      });
+    }
+    
   } catch (error) {
     res.status(500).send({
       status: "FAILED",
@@ -93,7 +109,13 @@ const loggedUser = async (req, res) => {
 
   try {
     const updatedUser = await userService.logedUser(userEmail);
-    res.send({ updatedUser });
+
+    return res.status(200).send({
+      status: "OK",
+      message: "User updated successfully",
+      updatedUser
+    });
+
   } catch (error) {
     res.status(500).send({
       status: "FAILED",

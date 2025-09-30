@@ -50,12 +50,20 @@ const loginUser = async (userEmail) => {
 
     const mongoUser = await getUser(userEmail);
 
+    let putOrPost = [];
+
     if (!mongoUser) {
       const newUser = {
         active: false,    
         ...kaotikaUser,   
       };
-      return await createUser(newUser);
+
+      const createdUser = await createUser(newUser)
+
+        putOrPost.push(0);
+        putOrPost.push(createdUser);
+
+      return putOrPost;
     }   
 
     const updatedUser = await updateUser(userEmail, {
@@ -63,7 +71,10 @@ const loginUser = async (userEmail) => {
       ...kaotikaUser,
     });
 
-    return updatedUser;
+    putOrPost.push(1);
+    putOrPost.push(updatedUser);
+
+    return putOrPost;
 
   } catch (error) {
     throw error;
