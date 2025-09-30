@@ -4,18 +4,16 @@ const router = express.Router();
 const middleware = require("../middlewares/verifyData");
 const userController = require("../controllers/userController");
 
-// router.post(
-//   "/access-logged-in",
-//   middleware.verifyIdToken,
-//   userController.updateUser
-// );
 
+
+// TESTISNG
 router.get(
   "/kaotika",
   middleware.verifyIdToken,       
   userController.getKaotikaUser
 );
 
+// TESTING
 router.get(
   "/mongo",
   middleware.verifyIdToken,       
@@ -26,6 +24,12 @@ router.post(
   "/log-in",
   middleware.verifyIdToken,       
   userController.loginUser
+);
+
+router.post(
+  "/access-logged-in",
+  middleware.verifyIdToken,
+  userController.loggedUser
 );
 
 module.exports = router;

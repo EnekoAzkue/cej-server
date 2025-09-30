@@ -1,5 +1,7 @@
 const userService = require("../services/userService");
 
+
+//TESTING
 const getMongoUser = async (req, res) => {
   const userEmail = res.locals.userEmail;
 
@@ -28,6 +30,7 @@ const getMongoUser = async (req, res) => {
   }
 };
 
+//TESTING
 const getKaotikaUser = async (req, res) => {
   const userEmail = res.locals.userEmail;
 
@@ -78,7 +81,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-const logedUser = async (req, res) => {
+const loggedUser = async (req, res) => {
   const userEmail = res.locals.userEmail;
 
   if (!userEmail) {
@@ -105,5 +108,5 @@ module.exports = {
   getMongoUser,
   getKaotikaUser,
   loginUser,
-  logedUser,
+  loggedUser,
 };
