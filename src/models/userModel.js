@@ -376,17 +376,16 @@ const userAttributes = {
   insanity: Number,
 };
 
-const dataSchema = new Schema({
+const dataSchema = new Schema ({
   attributes: userAttributes,
   equipment: equipmentSchema,
   inventory: inventorySchema,
   ...playerInfo,
-})
+});
 
 // Main Player Schema
 const playerSchema = new Schema({
   active: Boolean,
-  status: String,
   data: dataSchema,
 });
 
