@@ -1,56 +1,208 @@
-// Load Mongoose
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const mongoose = require("mongoose");
+const { Schema, ObjectId } = mongoose;
 
-// Basic item fields
-const itemFields = {
-  _id: String,
+const skillSchema = new Schema({
+  skill: ObjectId,
+  activeLevels: [],
+});
+
+const taskSchema = new Schema({
+  classroomId: String,
+  courseWorkName: String,
+  grade: Number,
+  selectedAssignment: String,
+  maxPoints: {
+    type: Number,
+    required: false,
+  },
+});
+
+const attributeSchema = new Schema({
+  name: String,
+  description: String,
+  value: Number,
+});
+
+const profileSchema = new Schema({
+  name: String,
+  description: String,
+  image: String,
+  attributes: [attributeSchema],
+});
+
+const commonEquipmentFields = {
   name: String,
   description: String,
   type: String,
   image: String,
   value: Number,
-  base_percentage: Number,
   min_lvl: Number,
 };
 
-// Player Profile & Attributes
-const playerAttributesSchema = new Schema({
-  _id: String,
+const commonAttributesAndModifiersSchema = new Schema(
+  {
+    intelligence: Number,
+    dexterity: Number,
+    charisma: Number,
+    constitution: Number,
+    strength: Number,
+    insanity: Number,
+  },
+  { _id: false }
+);
+
+const enhancerPotionSchema = new Schema({
+  modifiers: commonAttributesAndModifiersSchema,
+  ...commonEquipmentFields,
+  duration: Number,
+});
+
+const healingPotionSchema = new Schema({
+  modifiers: {
+    type: {
+      hit_points: Number,
+      intelligence: Number,
+      dexterity: Number,
+      charisma: Number,
+      constitution: Number,
+      strength: Number,
+      insanity: Number,
+      _id: false,
+    },
+  },
+  ...commonEquipmentFields,
+});
+
+const recoveryEffectSchema = new Schema({
+  modifiers: {
+    type: {
+      hit_points: Number,
+      intelligence: Number,
+      dexterity: Number,
+      charisma: Number,
+      constitution: Number,
+      strength: Number,
+      insanity: Number,
+      _id: false,
+    },
+  },
+  name: String,
+  description: String,
+  type: String,
+  antidote_effects: [String],
+  poison_effects: [String],
+});
+
+const antidotePotionSchema = new Schema({
+  ...commonEquipmentFields,
+  recovery_effect: recoveryEffectSchema,
+});
+
+const ringSchema = new Schema({
+  modifiers: commonAttributesAndModifiersSchema,
+  ...commonEquipmentFields,
+  isUnique: Boolean,
+  isActive: Boolean,
+});
+
+const bootSchema = new Schema({
+  modifiers: commonAttributesAndModifiersSchema,
+  ...commonEquipmentFields,
+  defense: Number,
+  isActive: Boolean,
+  isUnique: Boolean,
+});
+
+const artifactSchema = new Schema({
+  modifiers: commonAttributesAndModifiersSchema,
+  ...commonEquipmentFields,
+  isActive: Boolean,
+  isUnique: Boolean,
+});
+
+const shieldSchema = new Schema({
+  modifiers: commonAttributesAndModifiersSchema,
+  ...commonEquipmentFields,
+  defense: Number,
+  isUnique: Boolean,
+  isActive: Boolean,
+});
+
+const armorSchema = new Schema({
+  modifiers: commonAttributesAndModifiersSchema,
+  ...commonEquipmentFields,
+  defense: Number,
+  isUnique: Boolean,
+  isActive: Boolean,
+});
+
+const weaponSchema = new Schema({
+  modifiers: commonAttributesAndModifiersSchema,
+  ...commonEquipmentFields,
+  base_percentage: Number,
+  die_faces: Number,
+  die_modifier: Number,
+  die_num: Number,
+  isUnique: Boolean,
+  isActive: Boolean,
+});
+
+const helmetSchema = new Schema({
+  modifiers: commonAttributesAndModifiersSchema,
+  ...commonEquipmentFields,
+  defense: Number,
+  isUnique: Boolean,
+  isActive: Boolean,
+});
+
+const equipmentSchema = new Schema(
+  {
+    helmet: helmetSchema,
+    weapon: weaponSchema,
+    armor: armorSchema,
+    shield: shieldSchema,
+    artifact: artifactSchema,
+    boot: bootSchema,
+    ring: ringSchema,
+    antidote_potion: antidotePotionSchema,
+    healing_potion: healingPotionSchema,
+    enhancer_potion: enhancerPotionSchema,
+  },
+  { _id: false }
+);
+
+const ingredientSchema = new Schema({
   name: String,
   description: String,
   value: Number,
-});
-
-const playerProfile = {
-  _id: String,
-  name: String,
-  description: String,
+  effects: [String],
   image: String,
-  attributes: [playerAttributesSchema],
-};
-
-// Tasks Schema
-const tasksSchema = new  Schema({
-  classroomId: String,
-  courseWorkName: String,
-  grade: Number,
-  selectedAssignment: String,
-  maxPoints: Number,
+  type: String,
+  qty: Number,
 });
 
-// Skills Schema
-const skillsSchema = new Schema({
-  _id: String,
-  skill: String,
-  activeLevels: [Number],
-}, { _id: false });
+const inventorySchema = new Schema(
+  {
+    helmets: [helmetSchema],
+    weapons: [weaponSchema],
+    armors: [armorSchema],
+    shields: [shieldSchema],
+    artifacts: [artifactSchema],
+    boots: [bootSchema],
+    rings: [ringSchema],
+    antidote_potions: [antidotePotionSchema],
+    healing_potions: [healingPotionSchema],
+    enhancer_potions: [enhancerPotionSchema],
+    ingredients: [ingredientSchema],
+  },
+  { _id: false }
+);
 
-
-
-// Player Info Schema
-const playerInfo = {
-  _id: String,
+const playerSchema = new Schema({
+  active: Boolean,
+  attributes: commonAttributesAndModifiersSchema,
+  equipment: equipmentSchema,
+  inventory: inventorySchema,
   name: String,
   nickname: String,
   email: String,
@@ -59,335 +211,12 @@ const playerInfo = {
   level: Number,
   experience: Number,
   is_active: Boolean,
-  profile: playerProfile,
+  profile: profileSchema,
+  tasks: [taskSchema],
   gold: Number,
-  tasks: [tasksSchema],
   created_date: String,
   isBetrayer: Boolean,
-  skills: [skillsSchema],
-};
-
-const ringModifiers = {
-  intelligence: Number,
-  dexterity: Number,
-  constitution: Number,
-  insanity: Number,
-  charisma: Number,
-  strength: Number,
-}
-
-const ringSchema = new Schema({
-  modifiers: ringModifiers,
-  ...itemFields,
+  skills: [skillSchema],
 });
 
-const bootFields = {
-  _id: String,
-  name: String,
-  description: String,
-  type: String,
-  image: String,
-  value: Number,
-  defense: Number,
-  min_lvl: Number,
-  isActive: Boolean,
-  isUnique: Boolean,
-}
-
-const bootModifiers = {
-  intelligence: Number,
-  dexterity: Number,
-  constitution: Number,
-  insanity: Number,
-  charisma: Number,
-  strength: Number,
-}
-
-const bootSchema = new Schema({
-  modifiers: bootModifiers,
-  ...bootFields,
-});
-
-const shieldFields = {
-  _id: String,
-  name: String,
-  description: String,
-  type: String,
-  image: String,
-  value: Number,
-  defense: Number,
-  min_lvl: Number,
-  isUnique: Boolean,
-  isActive: Boolean,
-}
-
-const shieldModifiers = {
-  intelligence: Number,
-  dexterity: Number,
-  constitution: Number,
-  insanity: Number,
-  charisma: Number,
-  strength: Number,
-}
-
-const shieldSchema = new Schema({
-  modifiers: shieldModifiers,
-  ...shieldFields,
-});
-
-const helmetFields = {
-  _id: String,
-  name: String,
-  description: String,
-  type: String,
-  image: String,
-  value: Number,
-  defense: Number,
-  min_lvl: Number,
-  isUnique: Boolean,
-  isActive: Boolean,
-}
-
-const helmetModifiers = {
-  intelligence: Number,
-  dexterity: Number,
-  constitution: Number,
-  insanity: Number,
-  charisma: Number,
-  strength: Number,
-}
-
-// Equipment pieces
-const helmetSchema = new Schema({
-  modifiers: helmetModifiers,
-  ...helmetFields,
-
-
-});
-
-const enhancerPotionFields = {
-  _id: String,
-  name: String,
-  description: String,
-  type: String,
-  image: String,
-  value: Number,
-  duration: Number,
-  min_lvl: Number,
-}
-
-const enhancerPotionModifiers = {
-  intelligence: Number,
-  dexterity: Number,
-  constitution: Number,
-  insanity: Number,
-  charisma: Number,
-  strength: Number,
-}
-
-const enhancerPotSchema = new Schema({
-  modifiers: enhancerPotionModifiers,
-  ...enhancerPotionFields,
-});
-
-const healingPotionModifiers = {
-  hit_points: Number,
-  intelligence: Number,
-  dexterity: Number,
-  constitution: Number,
-  insanity: Number,
-  charisma: Number,
-  strength: Number,
-}
-
-// Potion Schemas
-const healingPotSchema = new Schema({
-  modifiers: healingPotionModifiers,
-  ...itemFields,
-});
-
-const recoveryEffectModifiers = {
-  hit_points: Number,
-  intelligence: Number,
-  dexterity: Number,
-  insanity: Number,
-  charisma: Number,
-  constitution: Number,
-  strength: Number,
-}
-
-const recoveryEffectData = {
-  _id: String,
-  name: String,
-  description: String,
-  type: String,
-  antidote_effects: [String],
-  poison_effects: [String],
-}
-
-const recoveryEffects = {
-  modifiers: recoveryEffectModifiers,
-  _id: String,
-  name: String,
-  description: String,
-  type: { type: String },
-  antidote_effects: [String],
-  poison_effects: [String],
-}
-
-const antidoteFields = {
-  _id: String,
-  name: String,
-  description: String,
-  type: String,
-  image: String,
-  value: Number,
-  recovery_effect: recoveryEffects,
-  min_lvl: Number,
-};
-
-const antidoteSchema = new Schema({
-  ...antidoteFields
-});
-
-const artifactFields = {
-  _id: String,
-  name: String,
-  description: String,
-  type: String,
-  image: String,
-  value: Number,
-  base_percentage: Number,
-  min_lvl: Number,
-}
-
-const artifactModifiers = {
-  intelligence: Number,
-  dexterity: Number,
-  constitution: Number,
-  insanity: Number,
-  charisma: Number,
-  strength: Number,
-}
-
-// Artifact Schema
-const artifactsSchema = new Schema({
-  modifiers: artifactModifiers,
-  ...artifactFields,
-});
-
-const armorFields = {
-  _id: String,
-  name: String,
-  description: String,
-  type: String,
-  image: String,
-  value: Number,
-  defense: Number,
-  min_lvl: Number,
-  isUnique: Boolean,
-  isActive: Boolean,
-}
-
-const armorModifiers = {
-  intelligence: Number,
-  dexterity: Number,
-  constitution: Number,
-  insanity: Number,
-  charisma: Number,
-  strength: Number,
-}
-
-// Armor Schema
-const armorsSchema = new Schema({
-  modifiers: armorModifiers,
-  ...armorFields,
-
-});
-
-const weaponFields = {
-  _id: String,
-  name: String,
-  description: String,
-  type: String,
-  image: String,
-  value: Number,
-  base_percentage: Number,
-  min_lvl: Number,
-  die_faces: Number,
-  die_modifier: Number,
-  die_num: Number,
-  isUnique: Boolean,
-  isActive: Boolean,
-}
-
-const weaponModifiers = {
-  intelligence: Number,
-  dexterity: Number,
-  constitution: Number,
-  insanity: Number,
-  charisma: Number,
-  strength: Number,
-};
-
-// Weapon Schema
-const weaponsSchema = new Schema({
-  modifiers: weaponModifiers,
-  ...weaponFields,
-});
-
-// Inventory Schema (multiple items)
-const inventorySchema = new Schema({
-  helmets: [helmetSchema],
-  weapons: [weaponsSchema],
-  armors: [armorsSchema],
-  shields: [shieldSchema],
-  artifacts: [artifactsSchema],
-  boots: [bootSchema],
-  rings: [ringSchema],
-  antidote_potions: [antidoteSchema],
-  healing_potions: [healingPotSchema],
-  enhancer_potions: [enhancerPotSchema],
-  ingredients: [String],
-});
-
-// Equipment Schema (equipped items)
-const equipmentSchema = new Schema({
-  weapon: weaponsSchema,
-  armor: armorsSchema,
-  artifact: artifactsSchema,
-  antidote_potion: antidoteSchema,
-  healing_potion: healingPotSchema,
-  enhancer_potion: enhancerPotSchema,
-  helmet: helmetSchema,
-  shield: shieldSchema,
-  boot: bootSchema,
-  ring: ringSchema,
-});
-
-// Basic modifiers fields
-const userAttributes = {
-  intelligence: Number,
-  dexterity: Number,
-  charisma: Number,
-  constitution: Number,
-  strength: Number,
-  insanity: Number,
-};
-
-const dataSchema = new Schema ({
-  active: Boolean,
-  attributes: userAttributes,
-  equipment: equipmentSchema,
-  inventory: inventorySchema,
-  ...playerInfo,
-});
-
-// Main Player Schema
-const playerSchema = new Schema({
-  active: Boolean,
-  data: dataSchema,
-});
-
-module.exports = mongoose.model('player', dataSchema);
-
+module.exports = mongoose.model("Player", playerSchema);
