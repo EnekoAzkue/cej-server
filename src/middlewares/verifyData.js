@@ -13,7 +13,7 @@ async function verifyIdToken(req, res, next) {
     {
       method: "POST",
       body: JSON.stringify({
-        requestUri: `https://example.com${req.originalUrl}` /* TODO: Replace "example.com" with a valid value */,
+        requestUri: `https://cej-server.onrender.com${req.originalUrl}`,
         postBody: `id_token=${idToken}&providerId=google.com`,
         returnSecureToken: true,
       }),
