@@ -31,14 +31,13 @@ const playerProfile = {
 };
 
 // Tasks Schema
-const tasksSchema = {
+const tasksSchema = new  Schema({
   classroomId: String,
   courseWorkName: String,
   grade: Number,
   selectedAssignment: String,
   maxPoints: Number,
-  _id: String,
-};
+});
 
 // Skills Schema
 const skillsSchema = new Schema({
@@ -377,6 +376,7 @@ const userAttributes = {
 };
 
 const dataSchema = new Schema ({
+  active: Boolean,
   attributes: userAttributes,
   equipment: equipmentSchema,
   inventory: inventorySchema,
@@ -389,5 +389,5 @@ const playerSchema = new Schema({
   data: dataSchema,
 });
 
-module.exports = mongoose.model('player', playerSchema);
+module.exports = mongoose.model('player', dataSchema);
 

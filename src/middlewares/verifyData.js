@@ -2,8 +2,8 @@ const { getAuth } = require("firebase-admin/auth");
 
 async function verifyIdToken(req, res, next) {
   // Fake para pruebas
-  // res.locals.userEmail = "eneko.azkue@ikasle.aeg.eus";
-  // return next();
+  res.locals.userEmail = "eneko.azkue@ikasle.aeg.eus";
+  return next();
 
 
   const { idToken } = req.body;
