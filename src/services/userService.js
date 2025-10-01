@@ -16,7 +16,8 @@ const getKaotikaUser = async (userEmail) => {
       throw new Error(`Kaotika API error: ${response.status}`);
     }
     const kaotikaUser = await response.json();
-    return kaotikaUser || null;
+    const userData = kaotikaUser.data
+    return userData || null;
   } catch (error) {
     throw error;
   }
@@ -47,7 +48,6 @@ const loginUser = async (userEmail) => {
     if (!kaotikaUser) {
       throw new Error(`User not found in Kaotika with email: ${userEmail}`);
     }
-
     const mongoUser = await getUser(userEmail);
 
     let putOrPost = [];
