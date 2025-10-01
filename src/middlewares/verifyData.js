@@ -1,11 +1,6 @@
 const { getAuth } = require("firebase-admin/auth");
 
 async function verifyIdToken(req, res, next) {
-  // Fake para pruebas
-  res.locals.userEmail = "eneko.azkue@ikasle.aeg.eus";
-  return next();
-
-
   const { idToken } = req.body;
 
   const response = await fetch(
@@ -13,7 +8,7 @@ async function verifyIdToken(req, res, next) {
     {
       method: "POST",
       body: JSON.stringify({
-        requestUri: `https://example.com${req.originalUrl}` /* TODO: Replace "example.com" with a valid value */,
+        requestUri: `http://localhost:3000${req.originalUrl}`,
         postBody: `id_token=${idToken}&providerId=google.com`,
         returnSecureToken: true,
       }),
