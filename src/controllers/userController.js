@@ -61,7 +61,7 @@ const getKaotikaUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const userEmail = res.locals.userEmail;
-
+  
   if (!userEmail) {
     return res.status(400).send({
       status: "FAILED",
@@ -89,10 +89,9 @@ const loginUser = async (req, res) => {
     }
     
   } catch (error) {
-    res.status(500).send({
+    res.status(403).send({
       status: "FAILED",
-      message: "Error during login flow",
-      data: { error: error?.message || error },
+      message: "User not found on kaotika"
     });
   }
 };
@@ -117,10 +116,9 @@ const loggedUser = async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).send({
+    return res.status(400).send({
       status: "FAILED",
-      message: "Error refreshing user from Kaotika",
-      data: { error: error?.message || error },
+      data: { error: "userEmail not available" },
     });
   }
 };
