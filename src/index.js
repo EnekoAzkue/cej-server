@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const { initializeApp, applicationDefault } = require("firebase-admin/app");
 
 initializeApp({
-  credential: applicationDefault(),
+  credential: "./firebase-service.json"
 });
 
 const app = express();
