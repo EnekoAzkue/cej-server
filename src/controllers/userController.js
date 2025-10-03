@@ -61,8 +61,9 @@ const getKaotikaUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const userEmail = res.locals.userEmail;
-  
+  console.log(`Logging in with Email: ${userEmail}.`)
   if (!userEmail) {
+    console.log(`Email not available: ${userEmail}.`)
     return res.status(400).send({
       status: "FAILED",
       data: { error: "userEmail not available" },
@@ -75,12 +76,14 @@ const loginUser = async (req, res) => {
     const user = putOrPost[1];
 
     if(putOrPost[0] === 0) {
+      console.log("User created successfully.\n")
       return res.status(201).send({
         status: "OK",
         message: "User created successfully",
         user
       });
     } else {
+      console.log("User updated successfully.\n")
       return res.status(200).send({
         status: "OK",
         message: "User updated successfully",
@@ -98,8 +101,9 @@ const loginUser = async (req, res) => {
 
 const loggedUser = async (req, res) => {
   const userEmail = res.locals.userEmail;
-
+  console.log(`User with Email: ${userEmail} already logged in.`)
   if (!userEmail) {
+    console.log(`Email not available: ${userEmail}.`)
     return res.status(400).send({
       status: "FAILED",
       data: { error: "userEmail not available" },
@@ -108,7 +112,7 @@ const loggedUser = async (req, res) => {
 
   try {
     const updatedUser = await userService.logedUser(userEmail);
-
+    console.log("User updated successfully.\n")
     return res.status(200).send({
       status: "OK",
       message: "User updated successfully",
