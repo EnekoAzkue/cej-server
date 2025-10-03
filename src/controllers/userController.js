@@ -92,6 +92,7 @@ const loginUser = async (req, res) => {
     }
     
   } catch (error) {
+    console.log(`User not found in Kaotika with Email: ${userEmail}`)
     res.status(403).send({
       status: "FAILED",
       message: "User not found on kaotika"
