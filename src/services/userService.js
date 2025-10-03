@@ -2,6 +2,7 @@ const User = require('../database/userDatabase');
 
 const getUser = async (userEmail) => {
   try {
+    console.log("Fetching user from MongoDB...")
     const user = await User.getUser(userEmail);
     return user;
   } catch (error) {
@@ -11,6 +12,7 @@ const getUser = async (userEmail) => {
 
 const getKaotikaUser = async (userEmail) => {
   try {
+        console.log("Fetching user from Kaotika...")
     const response = await fetch(`https://kaotika-server.fly.dev/players/email/${userEmail}`);
     if (!response.ok) {
       throw new Error(`Kaotika API error: ${response.status}`);
@@ -25,7 +27,8 @@ const getKaotikaUser = async (userEmail) => {
 
 const createUser = async (newUser) => {
   try {
-      
+      console.log(`User not found in MondoDB.`)
+      console.log("Creating user...")
       const createdUser = await User.createUser(newUser);
     return createdUser;
   } catch (error) {
@@ -35,6 +38,7 @@ const createUser = async (newUser) => {
 
 const updateUser = async (userEmail, changes) => {
   try {
+    console.log("Updating user...")
     const updatedUser = await User.updateUser(userEmail, changes);
     return updatedUser;
   } catch (error) {
