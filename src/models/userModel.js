@@ -200,6 +200,9 @@ const inventorySchema = new Schema(
 
 const playerSchema = new Schema({
   active: Boolean,
+  rol: String,
+  socketId: String,
+  isInside: Boolean,
   attributes: commonAttributesAndModifiersSchema,
   equipment: equipmentSchema,
   inventory: inventorySchema,

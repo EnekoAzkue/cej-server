@@ -59,6 +59,9 @@ const loginUser = async (userEmail) => {
     if (!mongoUser) {
       const newUser = {
         active: false,    
+        rol: "",
+        socketId: "",
+        isInside: false,
         ...kaotikaUser,   
       };
 
@@ -71,7 +74,10 @@ const loginUser = async (userEmail) => {
     }   
 
     const updatedUser = await updateUser(userEmail, {
-      active: true,
+        active: true,    
+        rol: "",
+        socketId: "",
+        isInside: false,
       ...kaotikaUser,
     });
 
