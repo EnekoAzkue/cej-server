@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-const { Schema, ObjectId } = mongoose;
+import mongoose from "mongoose";
+const { Schema } = mongoose;
+const ObjectId = mongoose.Types.ObjectId;
 
 const skillSchema = new Schema({
   skill: ObjectId,
@@ -222,4 +223,4 @@ const playerSchema = new Schema({
   skills: [skillSchema],
 });
 
-module.exports = mongoose.model("Player", playerSchema);
+export default mongoose.model("Player", playerSchema);

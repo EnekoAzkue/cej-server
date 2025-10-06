@@ -1,8 +1,7 @@
-const userService = require("../services/userService");
-
+import userService from "../services/userService";
 
 //TESTING
-const getMongoUser = async (req, res) => {
+const getMongoUser = async (req: any, res: any) => {
   const userEmail = res.locals.userEmail;
 
   if (!userEmail) {
@@ -21,7 +20,7 @@ const getMongoUser = async (req, res) => {
       });
     }
     res.send({  user });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send({
       status: "FAILED",
       message: "Error fetching user from Mongo",
@@ -31,7 +30,7 @@ const getMongoUser = async (req, res) => {
 };
 
 //TESTING
-const getKaotikaUser = async (req, res) => {
+const getKaotikaUser = async (req: any, res: any) => {
   const userEmail = res.locals.userEmail;
 
   if (!userEmail) {
@@ -50,7 +49,7 @@ const getKaotikaUser = async (req, res) => {
       });
     }
     res.send({ user });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send({
       status: "FAILED",
       message: "Error fetching user from Kaotika",
@@ -59,7 +58,7 @@ const getKaotikaUser = async (req, res) => {
   }
 };
 
-const loginUser = async (req, res) => {
+const loginUser = async (req: any, res: any) => {
   const userEmail = res.locals.userEmail;
   console.log(`Logging in with Email: ${userEmail}.`)
   if (!userEmail) {
@@ -100,7 +99,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-const loggedUser = async (req, res) => {
+const loggedUser = async (req: any, res: any) => {
   const userEmail = res.locals.userEmail;
   console.log(`User with Email: ${userEmail} already logged in.`)
   if (!userEmail) {
@@ -128,10 +127,11 @@ const loggedUser = async (req, res) => {
   }
 };
 
-
-module.exports = {
+const userController = {
   getMongoUser,
   getKaotikaUser,
   loginUser,
   loggedUser,
 };
+
+export default userController;
