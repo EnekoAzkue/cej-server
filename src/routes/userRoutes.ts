@@ -30,4 +30,9 @@ router.post(
   userController.loggedUser
 );
 
+router.get(
+  "/:userEmail",
+  userController.getUser
+);
+
 export default router;

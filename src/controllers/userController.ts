@@ -127,11 +127,33 @@ const loggedUser = async (req: any, res: any) => {
   }
 };
 
+const getUser = async (req: any, res: any ) => {
+  const {params: {userEmail}} = req;
+
+  try {
+    const user = await userService.getUser(userEmail);
+    if (!user) {
+      return res.status(403).send({
+        status: "FAILED",
+        data: { error: `Can't find user with the Email: ${userEmail}` },
+      });
+    }
+    res.send({  user });
+  } catch (error: any) {
+    res.status(500).send({
+      status: "FAILED",
+      message: "Error fetching user from Mongo",
+      data: { error: error?.message || error },
+    });
+  }
+};
+
 const userController = {
   getMongoUser,
   getKaotikaUser,
   loginUser,
   loggedUser,
+  getUser,
 };
 
 export default userController;
