@@ -1,5 +1,6 @@
 import User from "../database/userDatabase";
 import USER_ROLES from "../roles/roles";
+import EMAIL from "../roles/emails";
 
 const getUser = async (userEmail: string) => {
   try {
@@ -66,14 +67,14 @@ const loginUser = async (userEmail: string) => {
         ...kaotikaUser,   
       };
 
-    if(newUser.email.includes("@ikasle.aeg.eus")) {
+    if(newUser.email.includes(EMAIL.ACOLYTE)) {
       newUser.rol = USER_ROLES.ACOLYTE;
-    } else if(newUser.email === "classcraft.daw2@aeg.eus") {
+    } else if(newUser.email === EMAIL.ISTVAN) {
       newUser.rol = USER_ROLES.ISTVAN;
-    } else if(newUser.email === "oskar.calvo@aeg.eus") {
+    } else if(newUser.email === EMAIL.MORTIMER) {
       newUser.rol = USER_ROLES.MORTIMER;
-    } else if(newUser.email === "ozarate@aeg.eus") {
-      newUser.rol = USER_ROLES.VILLANO;
+    } else if(newUser.email === EMAIL.VILLAIN) {
+      newUser.rol = USER_ROLES.VILLAIN;
     }
 
       const createdUser = await createUser(newUser)

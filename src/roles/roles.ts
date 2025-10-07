@@ -1,5 +1,5 @@
 const USER_ROLES = {
-    VILLANO: "villain",
+    VILLAIN: "villain",
     MORTIMER:"mortimer",
     ISTVAN:"istvan",
     ACOLYTE:"acolyte"
