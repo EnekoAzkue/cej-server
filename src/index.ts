@@ -4,6 +4,9 @@ import userRouter from "./routes/userRoutes";
 import mongoose from "mongoose";
 import { initializeApp, applicationDefault } from "firebase-admin/app";
 import 'dotenv/config';
+import { createServer } from "http";
+import { Server } from "socket.io";
+
 
 
 initializeApp({
@@ -11,6 +14,8 @@ initializeApp({
 });
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, { /* options */ });
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
@@ -20,7 +25,7 @@ async function start() {
   try {
     await mongoose.connect(process.env.MONGODB_ROUTE!);
 
-    app.listen(PORT, () => {
+    httpServer.listen(PORT, () => {
       console.log(`API is listening on port ${PORT}.`);
     });
 
