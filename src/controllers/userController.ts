@@ -101,7 +101,7 @@ const loginUser = async (req: any, res: any) => {
 
 const loggedUser = async (req: any, res: any) => {
   const userEmail = res.locals.userEmail;
-  console.log(`User with Email: ${userEmail} already logged in.`)
+  console.log(`User with email: ${userEmail} already logged in.`)
   if (!userEmail) {
     console.log(`Email not available: ${userEmail}.`)
     return res.status(400).send({
@@ -116,7 +116,7 @@ const loggedUser = async (req: any, res: any) => {
     return res.status(200).send({
       status: "OK",
       message: "User updated successfully",
-      updatedUser
+      user: updatedUser,
     });
 
   } catch (error) {

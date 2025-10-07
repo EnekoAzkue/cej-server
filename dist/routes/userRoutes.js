@@ -13,5 +13,8 @@ router.get("/kaotika", verifyData_1.default.verifyIdToken, userController_1.defa
 router.get("/mongo", verifyData_1.default.verifyIdToken, userController_1.default.getMongoUser);
 router.post("/log-in", verifyData_1.default.verifyIdToken, userController_1.default.loginUser);
 router.post("/access-logged-in", verifyData_1.default.verifyIdToken, userController_1.default.loggedUser);
+router.get("/get/:userEmail", userController_1.default.getUser);
+router.patch("/update/:userEmail", userController_1.default.updateUser);
+router.get("/get-acolytes", userController_1.default.getAcolytes);
 exports.default = router;
 //# sourceMappingURL=userRoutes.js.map

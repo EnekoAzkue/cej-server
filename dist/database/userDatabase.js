@@ -32,10 +32,20 @@ const updateUser = async (userEmail, changes) => {
         throw error;
     }
 };
+const getAcolytes = async () => {
+    try {
+        const acolytes = userModel_1.default.find({ "rol": "acolyte" });
+        return acolytes;
+    }
+    catch (error) {
+        throw error;
+    }
+};
 const userDatabase = {
     getUser,
     createUser,
     updateUser,
+    getAcolytes,
 };
 exports.default = userDatabase;
 //# sourceMappingURL=userDatabase.js.map
