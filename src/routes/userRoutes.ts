@@ -1,10 +1,8 @@
-const express = require("express");
+import express, { Router } from "express";
 const router = express.Router();
 
-const middleware = require("../middlewares/verifyData");
-const userController = require("../controllers/userController");
-
-
+import middleware from "../middlewares/verifyData";
+import userController from "../controllers/userController";
 
 // TESTISNG
 router.get(
@@ -32,4 +30,4 @@ router.post(
   userController.loggedUser
 );
 
-module.exports = router;
+export default router;

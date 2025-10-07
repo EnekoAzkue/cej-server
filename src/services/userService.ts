@@ -1,6 +1,6 @@
-const User = require('../database/userDatabase');
+import User from "../database/userDatabase";
 
-const getUser = async (userEmail) => {
+const getUser = async (userEmail: string) => {
   try {
     console.log("Fetching user from MongoDB...")
     const user = await User.getUser(userEmail);
@@ -10,14 +10,14 @@ const getUser = async (userEmail) => {
   }
 };
 
-const getKaotikaUser = async (userEmail) => {
+const getKaotikaUser = async (userEmail: string) => {
   try {
         console.log("Fetching user from Kaotika...")
     const response = await fetch(`https://kaotika-server.fly.dev/players/email/${userEmail}`);
     if (!response.ok) {
       throw new Error(`Kaotika API error: ${response.status}`);
     }
-    const kaotikaUser = await response.json();
+    const kaotikaUser: any = await response.json();
     const userData = kaotikaUser.data
     return userData || null;
   } catch (error) {
@@ -25,7 +25,7 @@ const getKaotikaUser = async (userEmail) => {
   }
 };
 
-const createUser = async (newUser) => {
+const createUser = async (newUser: any) => {
   try {
       console.log(`User not found in MondoDB.`)
       console.log("Creating user...")
@@ -36,7 +36,7 @@ const createUser = async (newUser) => {
   }
 };
 
-const updateUser = async (userEmail, changes) => {
+const updateUser = async (userEmail: string, changes: any) => {
   try {
     console.log("Updating user...")
     const updatedUser = await User.updateUser(userEmail, changes);
@@ -46,7 +46,7 @@ const updateUser = async (userEmail, changes) => {
   }
 };
 
-const loginUser = async (userEmail) => {
+const loginUser = async (userEmail: string) => {
   try {
     const kaotikaUser = await getKaotikaUser(userEmail);
     if (!kaotikaUser) {
@@ -59,6 +59,9 @@ const loginUser = async (userEmail) => {
     if (!mongoUser) {
       const newUser = {
         active: false,    
+        rol: "",
+        socketId: "",
+        isInside: false,
         ...kaotikaUser,   
       };
 
@@ -71,7 +74,10 @@ const loginUser = async (userEmail) => {
     }   
 
     const updatedUser = await updateUser(userEmail, {
-      active: true,
+        active: true,    
+        rol: "",
+        socketId: "",
+        isInside: false,
       ...kaotikaUser,
     });
 
@@ -85,7 +91,7 @@ const loginUser = async (userEmail) => {
   }
 };
 
-const logedUser = async (userEmail) => {
+const logedUser = async (userEmail: string) => {
   try {
     const kaotikaUser = await getKaotikaUser(userEmail);
     if (!kaotikaUser) {
@@ -104,7 +110,7 @@ const logedUser = async (userEmail) => {
   }
 };
 
-module.exports = { 
+const userService = {
   getUser,
   createUser,
   updateUser,
@@ -112,3 +118,5 @@ module.exports = {
   loginUser,
   logedUser,
 };
+
+export default userService;
