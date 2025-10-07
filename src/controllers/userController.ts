@@ -148,12 +148,48 @@ const getUser = async (req: any, res: any ) => {
   }
 };
 
+const updateUser = async (req: any, res: any) => {
+  const {
+    body,
+    params: {userEmail},
+  } = req
+
+  if(!userEmail) {
+    return res.status(400).send({
+      status: "FAILED",
+      data: { error: "Parameter ':userEmail' can not be empty"},
+    });
+  }
+
+  try {
+    const updatedUser = await userService.updateUser(userEmail, body);
+
+    if(!updateUser) {
+      return res.status(403).send({
+        status: "FAILED",
+        data: { error: `Can't find user with the Email: ${userEmail}`}
+      });
+    }
+    console.log("User updated successfully.")
+    res.send( updatedUser )
+
+  } catch(error: any) {
+    res.status(500).send({
+      status: "FAILED",
+      message: "Error updating user",
+      data: { error: error?.message || error },
+    });
+  }
+      
+}
+
 const userController = {
   getMongoUser,
   getKaotikaUser,
   loginUser,
   loggedUser,
   getUser,
+  updateUser
 };
 
 export default userController;

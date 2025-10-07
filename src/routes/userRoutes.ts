@@ -35,4 +35,9 @@ router.get(
   userController.getUser
 );
 
+router.patch(
+  "/:userEmail",
+  userController.updateUser
+)
+
 export default router;
