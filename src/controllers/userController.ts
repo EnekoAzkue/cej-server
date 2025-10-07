@@ -181,7 +181,25 @@ const updateUser = async (req: any, res: any) => {
     });
   }
       
-}
+};
+
+const getAcolytes = async (req: any, res: any) => {
+  try {
+    const acolytes = await userService.getAcolytes();
+    if (acolytes.length === 0) {
+      return res.status(404).send({message: "Acolytes not found"});
+    }
+    res.send( acolytes )
+
+  } catch(error: any) {
+    res.status(500).send({ 
+      status: "FAILED",
+      message: "Error fetching acolytes",
+      data: { error: error?.message || error}
+    });
+  }
+
+};
 
 const userController = {
   getMongoUser,
@@ -189,7 +207,8 @@ const userController = {
   loginUser,
   loggedUser,
   getUser,
-  updateUser
+  updateUser,
+  getAcolytes,
 };
 
 export default userController;

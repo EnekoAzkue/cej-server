@@ -122,6 +122,15 @@ const logedUser = async (userEmail: string) => {
   }
 };
 
+const getAcolytes = async () => {
+  try {
+    const acolytes = User.getAcolytes();
+    return acolytes
+  } catch(error: any) {
+    throw error
+  }
+}
+
 const userService = {
   getUser,
   createUser,
@@ -129,6 +138,7 @@ const userService = {
   getKaotikaUser,
   loginUser,
   logedUser,
+  getAcolytes,
 };
 
 export default userService;

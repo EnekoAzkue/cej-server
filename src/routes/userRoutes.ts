@@ -31,13 +31,18 @@ router.post(
 );
 
 router.get(
-  "/:userEmail",
+  "/get/:userEmail",
   userController.getUser
 );
 
 router.patch(
-  "/:userEmail",
+  "/update/:userEmail",
   userController.updateUser
+)
+
+router.get(
+  "/get-acolytes",
+  userController.getAcolytes
 )
 
 export default router;
