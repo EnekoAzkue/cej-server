@@ -30,10 +30,20 @@ const updateUser = async (userEmail: string, changes: any) => {
   }
 };
 
+const getAcolytes = async () => {
+  try{
+    const acolytes = userModel.find({"rol": "acolyte"});
+    return acolytes
+  } catch(error: any) {
+    throw error;
+  }
+}
+
 const userDatabase = {
   getUser,
   createUser,
   updateUser,
+  getAcolytes,
 };
 
 export default userDatabase;

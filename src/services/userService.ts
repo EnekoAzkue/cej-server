@@ -1,4 +1,6 @@
 import User from "../database/userDatabase";
+import USER_ROLES from "../roles/roles";
+import EMAIL from "../roles/emails";
 
 const getUser = async (userEmail: string) => {
   try {
@@ -65,6 +67,16 @@ const loginUser = async (userEmail: string) => {
         ...kaotikaUser,   
       };
 
+    if(newUser.email.includes(EMAIL.ACOLYTE)) {
+      newUser.rol = USER_ROLES.ACOLYTE;
+    } else if(newUser.email === EMAIL.ISTVAN) {
+      newUser.rol = USER_ROLES.ISTVAN;
+    } else if(newUser.email === EMAIL.MORTIMER) {
+      newUser.rol = USER_ROLES.MORTIMER;
+    } else if(newUser.email === EMAIL.VILLAIN) {
+      newUser.rol = USER_ROLES.VILLAIN;
+    }
+
       const createdUser = await createUser(newUser)
 
         putOrPost.push(0);
@@ -110,6 +122,15 @@ const logedUser = async (userEmail: string) => {
   }
 };
 
+const getAcolytes = async () => {
+  try {
+    const acolytes = User.getAcolytes();
+    return acolytes
+  } catch(error: any) {
+    throw error
+  }
+}
+
 const userService = {
   getUser,
   createUser,
@@ -117,6 +138,7 @@ const userService = {
   getKaotikaUser,
   loginUser,
   logedUser,
+  getAcolytes,
 };
 
 export default userService;

@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const userDatabase_1 = __importDefault(require("../database/userDatabase"));
+const roles_1 = __importDefault(require("../roles/roles"));
+const emails_1 = __importDefault(require("../roles/emails"));
 const getUser = async (userEmail) => {
     try {
         console.log("Fetching user from MongoDB...");
@@ -66,6 +68,18 @@ const loginUser = async (userEmail) => {
                 isInside: false,
                 ...kaotikaUser,
             };
+            if (newUser.email.includes(emails_1.default.ACOLYTE)) {
+                newUser.rol = roles_1.default.ACOLYTE;
+            }
+            else if (newUser.email === emails_1.default.ISTVAN) {
+                newUser.rol = roles_1.default.ISTVAN;
+            }
+            else if (newUser.email === emails_1.default.MORTIMER) {
+                newUser.rol = roles_1.default.MORTIMER;
+            }
+            else if (newUser.email === emails_1.default.VILLAIN) {
+                newUser.rol = roles_1.default.VILLAIN;
+            }
             const createdUser = await createUser(newUser);
             putOrPost.push(0);
             putOrPost.push(createdUser);
@@ -102,6 +116,15 @@ const logedUser = async (userEmail) => {
         throw error;
     }
 };
+const getAcolytes = async () => {
+    try {
+        const acolytes = userDatabase_1.default.getAcolytes();
+        return acolytes;
+    }
+    catch (error) {
+        throw error;
+    }
+};
 const userService = {
     getUser,
     createUser,
@@ -109,6 +132,7 @@ const userService = {
     getKaotikaUser,
     loginUser,
     logedUser,
+    getAcolytes,
 };
 exports.default = userService;
 //# sourceMappingURL=userService.js.map

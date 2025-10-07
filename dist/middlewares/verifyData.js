@@ -6,7 +6,7 @@ async function verifyIdToken(req, res, next) {
     const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${process.env.GOOGLE_API_KEY}`, {
         method: "POST",
         body: JSON.stringify({
-            requestUri: `http://localhost:3000${req.originalUrl}`,
+            requestUri: `https://cej-server.onrender.com${req.originalUrl}`,
             postBody: `id_token=${idToken}&providerId=google.com`,
             returnSecureToken: true,
         }),

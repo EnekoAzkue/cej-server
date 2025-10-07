@@ -30,4 +30,19 @@ router.post(
   userController.loggedUser
 );
 
+router.get(
+  "/get/:userEmail",
+  userController.getUser
+);
+
+router.patch(
+  "/update/:userEmail",
+  userController.updateUser
+)
+
+router.get(
+  "/get-acolytes",
+  userController.getAcolytes
+)
+
 export default router;
