@@ -1,6 +1,6 @@
-const userModel = require('../models/userModel');
+import userModel from "../models/userModel";
 
-const getUser = async (userEmail) => {
+const getUser = async (userEmail: string) => {
   try {
     const user = await userModel.findOne({ email: userEmail });
     return user;
@@ -9,7 +9,7 @@ const getUser = async (userEmail) => {
   }
 };
 
-const createUser = async (newUser) => {
+const createUser = async (newUser: any) => {
   try {
     const userToInsert = new userModel(newUser);
     const createdUser = await userToInsert.save();
@@ -19,7 +19,7 @@ const createUser = async (newUser) => {
   }
 };
 
-const updateUser = async (userEmail, changes) => {
+const updateUser = async (userEmail: string, changes: any) => {
   try {
     const updatedUser = await userModel.findOneAndUpdate(
       { email: userEmail },{ $set: changes },{ new: true, upsert: true }         
@@ -30,8 +30,20 @@ const updateUser = async (userEmail, changes) => {
   }
 };
 
-module.exports = {
+const getAcolytes = async () => {
+  try{
+    const acolytes = userModel.find({"rol": "acolyte"});
+    return acolytes
+  } catch(error: any) {
+    throw error;
+  }
+}
+
+const userDatabase = {
   getUser,
   createUser,
-  updateUser
+  updateUser,
+  getAcolytes,
 };
+
+export default userDatabase;

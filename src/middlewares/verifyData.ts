@@ -1,6 +1,6 @@
-const { getAuth } = require("firebase-admin/auth");
+import { getAuth } from "firebase-admin/auth";
 
-async function verifyIdToken(req, res, next) {
+async function verifyIdToken(req: any, res: any, next: any) {
   const { idToken } = req.body;
   console.log(`idToken recieved...` )
 
@@ -16,8 +16,9 @@ async function verifyIdToken(req, res, next) {
     }
   );
 
-  const { idToken: firebaseIdToken } = await response.json();
-
+  const data: any = await response.json();
+  const { idToken: firebaseIdToken } = data;
+  
   getAuth()
     .verifyIdToken(firebaseIdToken)
     .then((decodedToken) => {
@@ -34,5 +35,8 @@ async function verifyIdToken(req, res, next) {
     });
   }
 
-
-module.exports = { verifyIdToken };
+  const middleware = {
+    verifyIdToken,
+  };
+  
+  export default middleware;
