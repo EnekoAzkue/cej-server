@@ -87,9 +87,6 @@ const loginUser = async (userEmail) => {
         }
         const updatedUser = await updateUser(userEmail, {
             active: true,
-            rol: "",
-            socketId: "",
-            isInside: false,
             ...kaotikaUser,
         });
         putOrPost.push(1);
