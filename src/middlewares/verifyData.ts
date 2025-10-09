@@ -17,7 +17,7 @@ async function verifyIdToken(req: any, res: any, next: any) {
 
   const data: any = await response.json();
   const { idToken: firebaseIdToken } = data;
-  
+
   getAuth()
     .verifyIdToken(firebaseIdToken)
     .then((decodedToken) => {
@@ -30,10 +30,10 @@ async function verifyIdToken(req: any, res: any, next: any) {
         data: { error: "The ID token is not valid or has expired." },
       });
     });
-  }
+}
 
-  const middleware = {
-    verifyIdToken,
-  };
-  
-  export default middleware;
+const middleware = {
+  verifyIdToken,
+};
+
+export default middleware;
