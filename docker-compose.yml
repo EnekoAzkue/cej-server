@@ -5,3 +5,5 @@ services:
     ports:
       - "6001:3000"
     restart: unless-stopped
+    env_file:
+      - .env
