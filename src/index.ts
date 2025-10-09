@@ -24,7 +24,6 @@ app.use("/user", userRouter);
 
 async function start() {
   try {
-    console.log(process.env.MONGODB_ROUTE);
     await mongoose.connect(process.env.MONGODB_ROUTE!);
 
     httpServer.listen(PORT, () => {
