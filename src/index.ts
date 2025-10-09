@@ -6,7 +6,7 @@ import { initializeApp, applicationDefault } from "firebase-admin/app";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { SocketEvents } from "./constants/constants";
-
+import "dotenv/config"
 
 
 
