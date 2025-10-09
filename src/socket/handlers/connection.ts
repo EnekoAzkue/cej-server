@@ -10,18 +10,19 @@ import {
 function handleConnection(socket: Socket) {
   console.log("Client connected to the server socket.");
 
-  socket.on(
-    SocketClientToServerEvents.CONNECTION_OPEN,
-    handleConnectionOpening
-  );
+  socket.on(SocketClientToServerEvents.CONNECTION_OPEN, (userEmail: string) => {
+    handleConnectionOpening(socket, userEmail);
+  });
 
   socket.on("disconnect", () => {
     handleDisconnection(socket);
   });
 }
 
-async function handleConnectionOpening(userEmail: string) {
-  console.log(`User with email ${userEmail} opened connection`);
+async function handleConnectionOpening(socket: Socket, userEmail: string) {
+  console.log(`The user with the email "${userEmail}" opened a connection.`);
+
+  await User.updateUserByField({ email: userEmail }, { socketId: socket.id });
 }
 
 async function handleDisconnection(socket: Socket) {
