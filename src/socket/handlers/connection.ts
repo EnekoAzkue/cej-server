@@ -34,7 +34,7 @@ async function handleDisconnection(socket: Socket) {
   const socketUser = await User.getUserByField(fieldToFilterBy);
   const isSocketUserAcolyte = socketUser?.rol === USER_ROLES.ACOLYTE;
 
-  if (isSocketUserAcolyte) {
+  if (isSocketUserAcolyte && socketUser.isInside) {
     changesToApply.isInside = false;
 
     const mortimer = await User.getUserByField({
