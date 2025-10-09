@@ -8,7 +8,7 @@ FROM base as build
 COPY package*.json ./
 
 
-RUN npm install --production
+RUN npm ci
 
 
 COPY . .
