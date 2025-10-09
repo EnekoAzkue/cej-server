@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import userRouter from "./routes/userRoutes";
 import mongoose from "mongoose";
 import { initializeApp, applicationDefault } from "firebase-admin/app";
-import 'dotenv/config';
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { SocketEvents } from "./constants/constants";
@@ -25,7 +24,6 @@ app.use("/user", userRouter);
 
 async function start() {
   try {
-    console.log(process.env)
     await mongoose.connect(process.env.MONGODB_ROUTE!);
 
     httpServer.listen(PORT, () => {
