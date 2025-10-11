@@ -1,8 +1,8 @@
 import userModel from "../models/userModel";
 
-const getUser = async (userEmail: string) => {
+const getUserByField = async (fieldToFilterBy: any) => {
   try {
-    const user = await userModel.findOne({ email: userEmail });
+    const user = await userModel.findOne(fieldToFilterBy);
     return user;
   } catch (error) {
     throw error;
@@ -19,30 +19,32 @@ const createUser = async (newUser: any) => {
   }
 };
 
-const updateUser = async (userEmail: string, changes: any) => {
+const updateUserByField = async (fieldToFilterBy: any, changesToApply: any) => {
   try {
     const updatedUser = await userModel.findOneAndUpdate(
-      { email: userEmail },{ $set: changes },{ new: true, upsert: true }         
+      fieldToFilterBy,
+      changesToApply,
+      { new: true }
     );
     return updatedUser;
-  } catch (error) {
+  } catch (error: any) {
     throw error;
   }
 };
 
 const getAcolytes = async () => {
-  try{
-    const acolytes = userModel.find({"rol": "acolyte"});
-    return acolytes
-  } catch(error: any) {
+  try {
+    const acolytes = userModel.find({ rol: "acolyte" });
+    return acolytes;
+  } catch (error: any) {
     throw error;
   }
-}
+};
 
 const userDatabase = {
-  getUser,
+  getUserByField,
   createUser,
-  updateUser,
+  updateUserByField,
   getAcolytes,
 };
 

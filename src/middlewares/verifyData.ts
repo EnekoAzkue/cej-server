@@ -2,14 +2,14 @@ import { getAuth } from "firebase-admin/auth";
 
 async function verifyIdToken(req: any, res: any, next: any) {
   const { idToken } = req.body;
-  console.log(`idToken recieved...` )
+  console.log(`ID token received...`);
 
   const response = await fetch(
     `https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=${process.env.GOOGLE_API_KEY}`,
     {
       method: "POST",
       body: JSON.stringify({
-        requestUri: `https://cej-server.onrender.com${req.originalUrl}`,
+        requestUri: `http://10.50.0.50:6001${req.originalUrl}`,
         postBody: `id_token=${idToken}&providerId=google.com`,
         returnSecureToken: true,
       }),
@@ -18,25 +18,27 @@ async function verifyIdToken(req: any, res: any, next: any) {
 
   const data: any = await response.json();
   const { idToken: firebaseIdToken } = data;
-  
+
   getAuth()
     .verifyIdToken(firebaseIdToken)
     .then((decodedToken) => {
       res.locals.userEmail = decodedToken.email;
-      console.log(`Valid idToken.`)
+      console.log(`Valid ID token.`);
       next();
     })
     .catch(() => {
-      console.log("Failed validating the token, token is not valid or expired.")
+      console.log(
+        "Failed validating the ID token: it is not valid or has expired."
+      );
       return res.status(500).send({
         status: "FAILED",
         data: { error: "The ID token is not valid or has expired." },
       });
     });
-  }
+}
 
-  const middleware = {
-    verifyIdToken,
-  };
-  
-  export default middleware;
+const middleware = {
+  verifyIdToken,
+};
+
+export default middleware;
