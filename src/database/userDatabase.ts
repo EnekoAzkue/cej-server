@@ -24,7 +24,7 @@ const updateUserByField = async (fieldToFilterBy: any, changesToApply: any) => {
     const updatedUser = await userModel.findOneAndUpdate(
       fieldToFilterBy,
       changesToApply,
-      { new: true, upsert: true }
+      { new: true }
     );
     return updatedUser;
   } catch (error: any) {
