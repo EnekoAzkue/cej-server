@@ -41,3 +41,5 @@ async function start() {
 }
 
 start();
+
+export { io };
